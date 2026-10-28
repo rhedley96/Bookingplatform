@@ -11,6 +11,7 @@ async function loginAsMember({ page }: { page: Page }) {
     await page.getByPlaceholder('Email').fill('memberb@email.com')
     await page.getByPlaceholder('Password').fill('password')
     await page.getByRole ('button', {name: "Sign In"}).click()
+    await page.waitForLoadState();
     await expect(page).toHaveURL ('http://localhost:3000/dashboard')
 
 }
@@ -30,6 +31,8 @@ test('has header', async ({ page }) => {
 
 test('valid login', async ({ page }) => {
   await loginAsMember({page});
+  await page.waitForLoadState();
+
   await expect(page).toHaveTitle(/Management Platform/);
 
 
@@ -45,6 +48,7 @@ test('invalid login', async ({ page }) =>{
   await page.getByPlaceholder('Email').fill('memberb@email.com')
   await page.getByPlaceholder('Password').fill('fakepassword')
   await page.getByRole ('button', {name: "Sign In"}).click()
+  await page.waitForLoadState();
 
   await expect(page).toHaveURL ('http://localhost:3000/auth/login')
   await expect(page.getByText('Invalid email or password')).toBeVisible();
@@ -56,8 +60,21 @@ test('booking rink', async ({ page }) => {
   await loginAsMember({page});
 
   await page.getByRole('link', { name: 'Book Now' }).click();
+
   await page.getByRole('button', { name: 'Book Rink 1 at 09:' }).click();
+  await page.waitForLoadState();
   await page.getByRole('button', { name: 'Request Booking' }).click();
   await expect(page.getByText('Booking requested for you successfully!')).toBeVisible();
 
   });
+
+  /*test ('locator failure', async ({page}) => {
+  await loginAsMember({page});
+
+  await page.getByRole('link', { name: 'Book Now' }).click();
+
+  await page.getByRole('button', { name: 'Book Rink 1 at 09:' }).click();
+  await page.getByRole('button', { name: 'Request Booking' }).click();
+  await expect(page.getByText('Booking not successful')).toBeVisible();
+
+  });*/
