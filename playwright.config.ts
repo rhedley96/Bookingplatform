@@ -37,19 +37,37 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
+      name: 'auth-setup',
+      testMatch: /auth-setup\.ts/
+    },
+
+    {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      testIgnore: /auth-setup\.ts/,
     },
 
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
+      testIgnore: /auth-setup\.ts/,
     },
 
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
+      testIgnore: /authsetup\.ts/,
     },
+
+  {
+    name: 'chromium-auth',
+    use: {
+      ...devices['Desktop Chrome'], 
+      storageState:'.auth/member.json',
+    },
+    dependencies: ['auth-setup'],
+    testIgnore:/auth-setup\.ts/,
+  },
 
     /* Test against mobile viewports. */
     // {

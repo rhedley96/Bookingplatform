@@ -2,19 +2,19 @@ import { test, expect, type Page } from '@playwright/test';
 
 const URL = 'http://localhost:3000'
 
-async function loginAsMember({ page }: { page: Page }) {
-    await page.goto(URL);
-    await page.getByRole ('link', {name: "Sign In"}).click()
+// async function loginAsMember({ page }: { page: Page }) {
+//     await page.goto(URL);
+//     await page.getByRole ('link', {name: "Sign In"}).click()
 
-    await expect(page).toHaveURL ('http://localhost:3000/auth/login')
+//     await expect(page).toHaveURL ('http://localhost:3000/auth/login')
 
-    await page.getByPlaceholder('Email').fill('memberb@email.com')
-    await page.getByPlaceholder('Password').fill('password')
-    await page.getByRole ('button', {name: "Sign In"}).click()
-    await page.waitForLoadState();
-    await expect(page).toHaveURL ('http://localhost:3000/dashboard')
+//     await page.getByPlaceholder('Email').fill('memberb@email.com')
+//     await page.getByPlaceholder('Password').fill('password')
+//     await page.getByRole ('button', {name: "Sign In"}).click()
+//     await page.waitForLoadState();
+//     await expect(page).toHaveURL ('http://localhost:3000/dashboard')
 
-}
+// }
 
 test('has title', async ({ page }) => {
   await page.goto(URL);
@@ -28,20 +28,12 @@ test('has header', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Browse Clubs' })).toBeVisible();
 });
 
-
-test('valid login', async ({ page }) => {
-  await loginAsMember({page});
-  await page.waitForLoadState();
-
-  await expect(page).toHaveTitle(/Management Platform/);
-
-
-});
-
 test('invalid login', async ({ page }) =>{
   
-  await page.goto(URL);
+  await page.goto(URL);  
   await page.getByRole ('link', {name: "Sign In"}).click()
+  await page.waitForLoadState();
+
 
   await expect(page).toHaveURL ('http://localhost:3000/auth/login')
 
@@ -55,9 +47,23 @@ test('invalid login', async ({ page }) =>{
 
 });
 
+  test.describe('Member Login', () => {
+  test.use({ storageState: '.auth/member.json' });
+
+
+test('valid login', async ({ page }) => {
+  await page.goto('http://localhost:3000/lakeview-bowls');
+  await page.waitForLoadState();
+
+  await expect(page).toHaveTitle(/Management Platform/);
+
+
+});
+
 
 test('booking rink', async ({ page }) => {
-  await loginAsMember({page});
+  await page.goto('http://localhost:3000/lakeview-bowls');
+  await page.waitForLoadState();
 
   await page.getByRole('link', { name: 'Book Now' }).click();
 
@@ -78,3 +84,4 @@ test('booking rink', async ({ page }) => {
   await expect(page.getByText('Booking not successful')).toBeVisible();
 
   });*/
+});
