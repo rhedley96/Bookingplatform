@@ -18,7 +18,8 @@ export default defineConfig({
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  //retries: process.env.CI ? 2 : 0,
+    retries: 2,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -30,24 +31,43 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
+      name: 'auth-setup',
+      testMatch: /auth-setup\.ts/
+    },
+
+    {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      testIgnore: /auth-setup\.ts/,
     },
 
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
+      testIgnore: /auth-setup\.ts/,
     },
 
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
+      testIgnore: /authsetup\.ts/,
     },
+
+  {
+    name: 'chromium-auth',
+    use: {
+      ...devices['Desktop Chrome'], 
+      storageState:'.auth/member.json',
+    },
+    dependencies: ['auth-setup'],
+    testIgnore:/auth-setup\.ts/,
+  },
 
     /* Test against mobile viewports. */
     // {
