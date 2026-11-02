@@ -1,13 +1,23 @@
 import { test, expect, type Page } from '@playwright/test';
+import { LoginPage } from '../src/pages/login-page';
+import { HomePage } from '../src/pages/home-page';
+
 
 const baseUrl = 'http://localhost:3000';
+let loginPage: LoginPage;
+let homePage: HomePage;
 
 test('has title @smoke', async ({ page }) => {
   await page.goto(baseUrl);
   await expect(page).toHaveTitle(/Club Management Platform/);
 });
 
-test('usercan login with valid credentials @smoke', async ({ page }) => {
+test('has header', async ({ page }) => {
+    await page.goto(baseUrl);
+    await expect(page.getByRole('heading', { name: 'Browse Clubs' })).toBeVisible();
+});
+
+test('user can login with valid credentials @smoke', async ({ page }) => {
     await page.goto(baseUrl);
     await page.getByRole('link', { name: 'Sign In' }).click();
     await page.waitForURL(`${baseUrl}/auth/login`);
