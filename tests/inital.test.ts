@@ -1,0 +1,93 @@
+import { test, expect, type Page } from '@playwright/test';
+import { LoginPage } from '../src/pages/login-page';
+import { HomePage } from '../src/pages/home-page';
+
+
+const baseUrl = 'http://localhost:3000';
+let loginPage: LoginPage;
+let homePage: HomePage;
+
+test('has title @smoke', async ({ page }) => {
+  await page.goto(baseUrl);
+  await expect(page).toHaveTitle(/Club Management Platform/);
+});
+
+test('has header', async ({ page }) => {
+    await page.goto(baseUrl);
+    await expect(page.getByRole('heading', { name: 'Browse Clubs' })).toBeVisible();
+});
+
+test('user can login with valid credentials @smoke', async ({ page }) => {
+    await page.goto(baseUrl);
+    await page.getByRole('link', { name: 'Sign In' }).click();
+    await page.waitForURL(`${baseUrl}/auth/login`);
+    await page.getByPlaceholder('Email').fill('memberb@email.com');
+    await page.getByPlaceholder('Password').fill('password');
+    await page.getByRole('button', { name: 'Sign In' }).click();
+    await expect(page).toHaveURL(`${baseUrl}/lakeview-bowls`);
+});
+
+test('cannot login with invalid credentials', async ({ page }) => {
+    await page.goto(baseUrl);
+    await page.getByRole('link', { name: 'Sign In' }).click();
+    await page.waitForURL(`${baseUrl}/auth/login`);
+    await page.getByPlaceholder('Email').fill('invalid@email.com');
+    await page.getByPlaceholder('Password').fill('invalidpassword');
+    await page.getByRole('button', { name: 'Sign In' }).click();
+    await expect(page).toHaveURL(`${baseUrl}/auth/login`);
+    await expect(page.getByText('Invalid email or password')).toBeVisible();
+});
+
+test('admin can login with valid credentials @smoke', async ({ page }) => {
+    await page.goto(baseUrl);
+    await page.getByRole('link', { name: 'Sign In' }).click();
+    await page.waitForURL(`${baseUrl}/auth/login`);
+    await page.getByPlaceholder('Email').fill('admin@wlbooking.com');
+    await page.getByPlaceholder('Password').fill('admin123');
+    await page.getByRole('button', { name: 'Sign In' }).click();
+    await expect(page).toHaveURL(`${baseUrl}/dashboard`);
+    await expect(page.getByRole('heading', { name: 'Platform Dashboard' })).toBeVisible();
+});
+
+test('member can book a rink @smoke', async ({ page }) => {
+    await page.goto(baseUrl);
+    await page.getByRole('link', { name: 'Sign In' }).click();
+    await page.waitForURL(`${baseUrl}/auth/login`);
+    await page.getByPlaceholder('Email').fill('memberb@email.com');
+    await page.getByPlaceholder('Password').fill('password');
+    await page.getByRole('button', { name: 'Sign In' }).click();
+    await expect(page).toHaveURL(`${baseUrl}/lakeview-bowls`);
+    await page.getByRole('link', { name: 'Book Now' }).click();
+    await page.getByRole('button', { name: 'Book Rink 1 at 09:' }).click();
+    await page.waitForLoadState();
+    await page.getByRole('button', { name: 'Request Booking' }).click();
+    await expect(page.getByText('Booking requested for you successfully!')).toBeVisible();
+});
+
+test('member can sign out @smoke', async ({ page }) => {
+    await page.goto(baseUrl);
+    await page.getByRole('link', { name: 'Sign In' }).click();
+    await page.waitForURL(`${baseUrl}/auth/login`);
+    await page.getByPlaceholder('Email').fill('memberb@email.com');
+    await page.getByPlaceholder('Password').fill('password');
+    await page.getByRole('button', { name: 'Sign In' }).click();
+    await page.getByRole('button', { name: 'Sign Out' }).click();
+    await expect(page).toHaveURL(`${baseUrl}`);
+    await expect(page.getByRole('link', { name: 'Sign In' })).toBeVisible();
+});
+
+test('member can check availability of rinks @smoke', async ({ page }) => {
+    await page.goto(baseUrl);
+    await page.getByRole('link', { name: 'Sign In' }).click();
+    await page.waitForURL(`${baseUrl}/auth/login`);
+    await page.getByPlaceholder('Email').fill('memberb@email.com');
+    await page.getByPlaceholder('Password').fill('password');
+    await page.getByRole('button', { name: 'Sign In' }).click();
+    await page.getByRole('link', { name: 'Check Availability' }).click();
+    await page.waitForLoadState();
+    await expect(page).toHaveURL(`${baseUrl}/lakeview-bowls/availability`);
+    await expect(page.getByRole('heading', { name: 'Main Green' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'All Weather Green' })).toBeVisible();
+});
+
+

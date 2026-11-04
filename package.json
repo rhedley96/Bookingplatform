@@ -4,6 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test:smoke": "playwright test --grep @smoke",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:failed": "playwright test --last-failed",
+
+
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
