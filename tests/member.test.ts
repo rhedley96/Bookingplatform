@@ -20,6 +20,15 @@ test.afterEach(async ({ page }, testInfo) => {
     await expect(loggedInUser.getByRole('link', { name: 'Sign In' })).toBeVisible();
 });
 
+test('register new member', async ({ page }) => {
+  await page.goto('/auth/register');
+  await page.getByPlaceholder('First Name').fill('John');
+  await page.getByPlaceholder('Last Name').fill('Doe');
+  await page.getByPlaceholder('Email').fill('john.doe@email.com');
+  await page.getByPlaceholder('Password').fill('password');
+  await page.getByRole('button', { name: 'Register' }).click();
+});
+
   test.describe('security tests', () => {
 //invalid login test
 test('invalid login', async ({ page, homePage, loginPage }) => {
@@ -30,7 +39,7 @@ test('invalid login', async ({ page, homePage, loginPage }) => {
   await loginPage.login(USER_CREDENTIALS.member.email, USER_CREDENTIALS.member.invalidPassword);
   await page.waitForLoadState();
   await expect(page).toHaveURL('/auth/login');
-await expect(page.getByText(EXPECTED_MESSAGES.invalidLogin)).toBeVisible();
+await expect(page.getByText('Invalid email or password')).toBeVisible();
 });
 
 //valid login test
