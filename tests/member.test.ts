@@ -20,14 +20,13 @@ test.afterEach(async ({ page }, testInfo) => {
     await expect(loggedInUser.getByRole('link', { name: 'Sign In' })).toBeVisible();
 });
 
-test('register new member', async ({ page }) => {
-  await page.goto('/auth/register');
-  await page.getByPlaceholder('First Name').fill('John');
-  await page.getByPlaceholder('Last Name').fill('Doe');
-  await page.getByPlaceholder('Email').fill('john.doe@email.com');
-  await page.getByPlaceholder('Password').fill('password');
-  await page.getByRole('button', { name: 'Register' }).click();
-});
+//register new member test
+  test('register new member', async ({ registeringPage }) => {
+    await registeringPage.navigateToRegistering();
+    await registeringPage.register('John', 'john.doe@email.com', 'password', '');
+    await expect(registeringPage.successMessage).toBeVisible();
+  });
+
 
   test.describe('security tests', () => {
 //invalid login test
