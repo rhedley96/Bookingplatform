@@ -1,4 +1,4 @@
-import { test as setup, expect, Page } from '@playwright/test';
+import { test as setup, expect } from './fixtures';
 
 
 const memberFile = '.auth/member.json'
@@ -31,4 +31,3 @@ setup('authenticate as member', async ({ page }) => {
 
 //   await page.context().storageState({ path: adminFile });
 // });
-
