@@ -2,7 +2,7 @@ import { type Locator, type Page } from "@playwright/test";
 
 export class BookingPage {
     readonly page: Page;
-    readonly bookNowLink: Locator; // Added for R2.1
+    readonly bookNowLink: Locator;
     readonly dateInput: Locator;
     readonly timeInput: Locator;
     readonly confirmButton: Locator;
@@ -10,7 +10,7 @@ export class BookingPage {
 
     constructor(page: Page) {
         this.page = page;
-        this.bookNowLink = page.getByRole('link', { name: 'Book Now' }); // Added
+        this.bookNowLink = page.getByRole('link', { name: 'Book Now' });  
         this.dateInput = page.getByPlaceholder('Select Date');
         this.timeInput = page.getByPlaceholder('Select Time');
         this.confirmButton = page.getByRole('button', { name: 'Request Booking' });
