@@ -1,5 +1,5 @@
 import { BOOKINGS } from '@/utils/testHelpers';
-import { USER_CREDENTIALS } from '@/test-data/testData';
+import { USER_CREDENTIALS, INVALID_LOGIN_CASES } from '@/test-data/testData';
 import { test, expect } from './fixtures';
 import { faker } from '@faker-js/faker'; //used to create a fake registration for a new member
 
@@ -31,6 +31,18 @@ test.afterEach(async ({ page }, testInfo) => {
     await expect(registeringPage.successMessage).toBeVisible();
   });
 
+for (const testCase of INVALID_LOGIN_CASES) {
+  test(`invalid login - ${testCase.case}`, async ({ page, homePage, loginPage }) => {
+    await homePage.clickSignIn();
+    await page.waitForLoadState();
+    await expect(page).toHaveURL('/auth/login');
+
+    await loginPage.login(testCase.email, testCase.password);
+    await page.waitForLoadState();
+    await expect(page).toHaveURL('/auth/login');
+    await expect(page.getByText(testCase.error)).toBeVisible();
+  });
+}
 
   test.describe('security tests', () => {
 //invalid login test
