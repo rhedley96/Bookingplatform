@@ -16,6 +16,7 @@ await expect(page.getByText('Invalid email or password')).toBeVisible();
 //valid login test
 test('valid login', async ({ loggedInUser }) => {
   await expect(loggedInUser).toHaveTitle(/Management Platform/);
+  console.log('Logged in successfully as member');
 });
 
 // booking rink test
