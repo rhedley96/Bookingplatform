@@ -2,6 +2,7 @@ import { expect, test as base, Page } from '@playwright/test';
 import { BookingPage } from '../src/pages/booking-page';
 import { HomePage } from '../src/pages/home-page';
 import { LoginPage } from '../src/pages/login-page';
+import { USER_CREDENTIALS } from '@/test-data/testData';
 
 type Fixtures = {
   bookingPage: BookingPage;
@@ -23,8 +24,8 @@ export const test = base.extend<Fixtures>({
   // Log in as a member before each test
   loggedInUser: async ({ page }, use) => {
     await page.goto('/auth/login');
-    await page.getByPlaceholder('Email').fill('memberb@email.com');
-    await page.getByPlaceholder('Password').fill('password');
+    await page.getByPlaceholder('Email').fill(USER_CREDENTIALS.member.email);
+    await page.getByPlaceholder('Password').fill(USER_CREDENTIALS.member.password);
     await page.getByRole('button', { name: 'Sign In' }).click();
     await page.waitForURL('/lakeview-bowls');
     await use(page);

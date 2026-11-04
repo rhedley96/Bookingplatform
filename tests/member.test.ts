@@ -1,4 +1,5 @@
 import { BOOKINGS } from '@/utils/testHelpers';
+import { USER_CREDENTIALS, EXPECTED_MESSAGES } from '@/test-data/testData';
 import { test, expect } from './fixtures';
 
 test.beforeEach(async ({ page }) => {
@@ -26,10 +27,10 @@ test('invalid login', async ({ page, homePage, loginPage }) => {
   await page.waitForLoadState();
   await expect(page).toHaveURL('/auth/login');
 
-  await loginPage.login('memberb@email.com', 'fakepassword');
+  await loginPage.login(USER_CREDENTIALS.member.email, USER_CREDENTIALS.member.invalidPassword);
   await page.waitForLoadState();
   await expect(page).toHaveURL('/auth/login');
-await expect(page.getByText('Invalid email or password')).toBeVisible();
+await expect(page.getByText(EXPECTED_MESSAGES.invalidLogin)).toBeVisible();
 });
 
 //valid login test
