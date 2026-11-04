@@ -1,7 +1,7 @@
 import { BOOKINGS } from '@/utils/testHelpers';
 import { USER_CREDENTIALS } from '@/test-data/testData';
 import { test, expect } from './fixtures';
-import { faker } from '@faker-js/faker';
+import { faker } from '@faker-js/faker'; //used to create a fake registration for a new member
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
