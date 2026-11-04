@@ -54,7 +54,7 @@ test('invalid login', async ({ page, homePage, loginPage }) => {
   await loginPage.login(USER_CREDENTIALS.member.email, USER_CREDENTIALS.member.invalidPassword);
   await page.waitForLoadState();
   await expect(page).toHaveURL('/auth/login');
-await expect(page.getByText('Invalid email or password')).toBeVisible();
+  await expect(page.getByText('Invalid email or password')).toBeVisible();
 });
 
 //valid login test
@@ -82,3 +82,18 @@ test('member can check availability of rinks', async ({ loggedInUser }) => {
     await expect(loggedInUser.getByRole('heading', { name: 'All Weather Green' })).toBeVisible();
 });
 });
+
+//test that will fail until the bug is fixed
+//member cannot book a rink in the past
+test('member books a rink in the past', { tag: '@defect', annotation: { type: 'defect', description: "DEF-002: booking made in the past" } }, async ({ loggedInUser, bookingPage }) => {
+  await bookingPage.navigateToBooking();
+  await bookingPage.selectRinkSlot(BOOKINGS.rink1past.fullMessage);
+  await bookingPage.confirmBooking();
+
+  await expect(
+    bookingPage.page.getByText('Bookings cannot be made in the past')
+  ).toBeVisible();
+});
+
+
+
