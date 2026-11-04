@@ -1,5 +1,5 @@
 import { BOOKINGS } from '@/utils/testHelpers';
-import { USER_CREDENTIALS, EXPECTED_MESSAGES } from '@/test-data/testData';
+import { USER_CREDENTIALS } from '@/test-data/testData';
 import { test, expect } from './fixtures';
 
 test.beforeEach(async ({ page }) => {
