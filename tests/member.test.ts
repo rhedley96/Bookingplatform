@@ -1,6 +1,7 @@
 import { BOOKINGS } from '@/utils/testHelpers';
 import { USER_CREDENTIALS } from '@/test-data/testData';
 import { test, expect } from './fixtures';
+import { faker } from '@faker-js/faker';
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
@@ -22,8 +23,11 @@ test.afterEach(async ({ page }, testInfo) => {
 
 //register new member test
   test('register new member', async ({ registeringPage }) => {
+    const randomName = faker.person.fullName();
+    const randomEmail = faker.internet.email();
+    const randomPassword = faker.internet.password();
     await registeringPage.navigateToRegistering();
-    await registeringPage.register('John', 'john.doe@email.com', 'password', '');
+    await registeringPage.register(randomName, randomEmail, randomPassword, '');
     await expect(registeringPage.successMessage).toBeVisible();
   });
 
