@@ -1,5 +1,7 @@
 import { BOOKINGS } from '@/utils/testHelpers';
+import { USER_CREDENTIALS } from '@/test-data/testData';
 import { test, expect } from './fixtures';
+import { faker } from '@faker-js/faker'; //used to create a fake registration for a new member
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
@@ -19,6 +21,17 @@ test.afterEach(async ({ page }, testInfo) => {
     await expect(loggedInUser.getByRole('link', { name: 'Sign In' })).toBeVisible();
 });
 
+//register new member test
+  test('register new member', async ({ registeringPage }) => {
+    const randomName = faker.person.fullName();
+    const randomEmail = faker.internet.email();
+    const randomPassword = faker.internet.password();
+    await registeringPage.navigateToRegistering();
+    await registeringPage.register(randomName, randomEmail, randomPassword, '');
+    await expect(registeringPage.successMessage).toBeVisible();
+  });
+
+
   test.describe('security tests', () => {
 //invalid login test
 test('invalid login', async ({ page, homePage, loginPage }) => {
@@ -26,7 +39,7 @@ test('invalid login', async ({ page, homePage, loginPage }) => {
   await page.waitForLoadState();
   await expect(page).toHaveURL('/auth/login');
 
-  await loginPage.login('memberb@email.com', 'fakepassword');
+  await loginPage.login(USER_CREDENTIALS.member.email, USER_CREDENTIALS.member.invalidPassword);
   await page.waitForLoadState();
   await expect(page).toHaveURL('/auth/login');
 await expect(page.getByText('Invalid email or password')).toBeVisible();
