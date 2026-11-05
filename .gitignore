@@ -34,3 +34,6 @@ ml/**/*.pyc
 test-results/
 playwright-report/
 playwright/.auth/
+
+# Local auth files
+.auth/member.json
