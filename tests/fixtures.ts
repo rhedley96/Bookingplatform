@@ -26,15 +26,7 @@ export const test = base.extend<Fixtures>({
   registeringPage: async ({ page }, use) => {
     await use(new RegisteringPage(page));
   },
-  // Log in as a member before each test
-  loggedInUser: async ({ page }, use) => {
-    await page.goto('/auth/login');
-    await page.getByPlaceholder('Email').fill(USER_CREDENTIALS.member.email);
-    await page.getByPlaceholder('Password').fill(USER_CREDENTIALS.member.password);
-    await page.getByRole('button', { name: 'Sign In' }).click();
-    await page.waitForURL('/lakeview-bowls');
-    await use(page);
-  }
 });
+
 
 export { expect };
