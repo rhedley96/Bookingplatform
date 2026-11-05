@@ -2,7 +2,6 @@ import { test, expect, type Page } from '@playwright/test';
 import { LoginPage } from '../src/pages/login-page';
 import { HomePage } from '../src/pages/home-page';
 
-
 const baseUrl = 'http://localhost:3000';
 let loginPage: LoginPage;
 let homePage: HomePage;
@@ -89,5 +88,4 @@ test('member can check availability of rinks @smoke', async ({ page }) => {
     await expect(page.getByRole('heading', { name: 'Main Green' })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'All Weather Green' })).toBeVisible();
 });
-
 
