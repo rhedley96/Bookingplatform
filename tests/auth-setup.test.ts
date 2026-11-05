@@ -3,17 +3,15 @@ import { test as setup, expect } from './fixtures';
 
 const memberFile = '.auth/member.json'
 
-setup('authenticate as member', async ({ page }) => {
-  await page.goto('/');
-  await page.getByRole('link', { name: 'Sign In' }).click();
-  await expect(page).toHaveURL('/auth/login');
+setup('authenticate as member', async ({ loginPage }) => {
+  await loginPage.page.goto('/');
+  await loginPage.page.getByRole('link', { name: 'Sign In' }).click();
+  await expect(loginPage.page).toHaveURL('/auth/login');
 
-  await page.getByPlaceholder('Email').fill('memberb@email.com');
-  await page.getByPlaceholder('Password').fill('password');
-  await page.getByRole('button', { name: 'Sign In' }).click();
-  await expect(page).toHaveURL('/lakeview-bowls');
+  await loginPage.login('memberb@email.com', 'password');
+  await expect(loginPage.page).toHaveURL('/lakeview-bowls');
 
-  await page.context().storageState({ path: memberFile });
+  await loginPage.page.context().storageState({ path: memberFile });
 });
 
 
