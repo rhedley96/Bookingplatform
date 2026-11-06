@@ -64,6 +64,7 @@ test('user cannot log in with invalid credentials', async ({ page, homePage, log
 test.describe('Platform navigation', () => {
 // booking rink test
 test('member can book a rink', async ({ loggedInUser, bookingPage }) => {
+  await loggedInUser.goto('/lakeview-bowls');
   await bookingPage.navigateToBooking();
   await bookingPage.selectRinkSlot(BOOKINGS.rink1.fullMessage);
   await bookingPage.confirmBooking();
@@ -95,6 +96,7 @@ test('member books a rink in the past',
     description: "DEF-002: booking made in the past"
   } 
   }, async ({ loggedInUser, bookingPage }) => {
+  await loggedInUser.goto('/lakeview-bowls');
   await bookingPage.navigateToBooking();
   await bookingPage.selectRinkSlot(BOOKINGS.rink1past.fullMessage);
   await bookingPage.confirmBooking();
