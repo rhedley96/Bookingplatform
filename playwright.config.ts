@@ -4,9 +4,12 @@ import { defineConfig, devices } from '@playwright/test';
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
- import dotenv from 'dotenv';
- import path from 'path';
- dotenv.config({ path: path.resolve('tests', '.env') });
+import dotenv from 'dotenv';
+import path from 'path';
+dotenv.config({
+  path: path.resolve('tests', '.env'),
+  quiet: true,
+});
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -37,8 +40,7 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    {name: 'setup', testMatch: /.*global\.setup\.ts/, teardown: 'teardown'},
-    {name: 'teardown', testMatch: /.*global\.teardown\.ts/},
+    {name: 'setup', testMatch: /.*global\.setup\.ts/},
 
     {
       name: 'chromium',
@@ -62,6 +64,8 @@ export default defineConfig({
       dependencies: ['setup'],
 
     },
+        {name: 'teardown', testMatch: /.*global\.teardown\.ts/},
+
 
     /* Test against mobile viewports. */
     // {
