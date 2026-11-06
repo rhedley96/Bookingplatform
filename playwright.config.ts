@@ -68,10 +68,16 @@ export default defineConfig({
 
 
     /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
+    {
+      name: 'Mobile Chrome',
+      use: { ...devices['Pixel 5'], storageState: 'playwright/.auth/member.json' },
+      dependencies: ['setup'],
+    },
+
+      
+
+    {name: 'teardown', testMatch: /.*global\.teardown\.ts/},
+
     // {
     //   name: 'Mobile Safari',
     //   use: { ...devices['iPhone 12'] },
