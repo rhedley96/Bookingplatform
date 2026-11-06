@@ -20,7 +20,9 @@ test.afterEach(async ({ page }, testInfo) => {
     await expect(loggedInUser).toHaveURL('/');
     await expect(loggedInUser.getByRole('link', { name: 'Sign In' })).toBeVisible();
 });
-
+test.describe('logged out user tests', () => {
+  test.use({ storageState: { cookies: [], origins: [] } });
+  
 //register new member test
   test('user can register as a new member', async ({ registeringPage }) => {
     const randomName = faker.person.fullName();
@@ -56,11 +58,6 @@ test('user cannot log in with invalid credentials', async ({ page, homePage, log
   await expect(page).toHaveURL('/auth/login');
   await expect(page.getByText('Invalid email or password')).toBeVisible();
 });
-
-//valid login test
-test('member can log in with valid credentials', async ({ loggedInUser }) => {
-  await expect(loggedInUser).toHaveTitle(/Management Platform/);
-  console.log('Logged in successfully as member');
 });
 });
 
@@ -80,6 +77,11 @@ test('member can check availability of rinks', async ({ loggedInUser }) => {
     await expect(loggedInUser).toHaveURL('/lakeview-bowls/availability');
     await expect(loggedInUser.getByRole('heading', { name: 'Main Green' })).toBeVisible();
     await expect(loggedInUser.getByRole('heading', { name: 'All Weather Green' })).toBeVisible();
+});
+//member can log in with valid credentials test
+test('member can log in with valid credentials', async ({ loggedInUser }) => {
+  await expect(loggedInUser).toHaveTitle(/Management Platform/);
+  console.log('Logged in successfully as member');
 });
 });
 
