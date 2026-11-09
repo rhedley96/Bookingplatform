@@ -79,7 +79,7 @@ Wraps custom Page Object Model (POM) classes (such as the login page or booking 
 ### 3. R3.4 Tests for Known Defects
 Document and track known application regressions via automated tests. This ensures that once developers resolve a bug, the corresponding test automatically transitions to passing without requiring changes.
 
-#### CI/CD Approach: Let Them Fail
+#### CI/CD Approach
 I used the **"Let them fail"** strategy for managing defect tests in the continuous integration pipeline:
 * **Current CI Behavior:** Defect tests are written using standard Playwright assertions and tagged with `@defect`. They execute normally and **turn the CI build Red (Fail)**.
 * **When Fixed:** Once the team deploys a fix, the test execution naturally turns **Green (Pass)** without requiring any modifications to the test code.
