@@ -9,13 +9,16 @@ test('GET /api/bookings list', { tag: '@api' }, async ({ request }) => {
 });
 
 
-test("POST /api/auth/register rejects missing values", { tag: "@api" }, async ({ request }) => {
+test("POST /api/auth/register rejects missing values", { tag: "@api" }, async ({ request }, testInfo) => {
   const response = await request.post("/api/auth/register", { data: {} });
+  const responseBody = await response.text();
+  await testInfo.attach("registration-response-body", {
+    body: responseBody,
+    contentType: response.headers()["content-type"] ?? "text/plain",
+  });
 
   expect(response.status()).toBe(400);
-  const body = await response.json();
-  console.log("Registration API response:", body);
-  expect(body).toEqual({
+  expect(JSON.parse(responseBody)).toEqual({
     error: "Email and password required",
   });
 });

@@ -68,10 +68,16 @@ test.describe('Platform navigation', () => {
 
 // booking rink test
 test('member can book a rink', async ({ loggedInUser, bookingPage }) => {
-  await bookingPage.navigateToBooking();
-  await bookingPage.selectRinkSlot(BOOKINGS.rink1.fullMessage);
-  await bookingPage.confirmBooking();
-  await expect(bookingPage.successMessage).toBeVisible();
+  await test.step('Open booking form', async () => {
+    await bookingPage.navigateToBooking();
+  });
+  await test.step('Select a rink slot and submit booking', async () => {
+    await bookingPage.selectRinkSlot(BOOKINGS.rink1.fullMessage);
+    await bookingPage.confirmBooking();
+  });
+  await test.step('Verify booking confirmation', async () => {
+    await expect(bookingPage.successMessage).toBeVisible();
+  });
 });
 
 //check availability test

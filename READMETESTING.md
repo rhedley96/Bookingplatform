@@ -62,6 +62,10 @@ Use these explicit script configurations pulled straight from our workspace shor
   ```
   npx playwright show-report
   ```
+  The report contains test steps, defect tags and annotations, and failure
+  evidence (screenshots, traces, and video). In CI, download the
+  `playwright-results` artifact for the HTML report and JUnit XML at
+  `results/junit.xml`.
 
 ## Test Structure 
 
