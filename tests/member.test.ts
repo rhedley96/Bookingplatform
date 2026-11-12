@@ -67,7 +67,7 @@ test.describe('Platform navigation', () => {
   });
 
 // booking rink test
-test('member can book a rink', async ({ loggedInUser, bookingPage }) => {
+test('member can book a rink @smoke', async ({ loggedInUser, bookingPage }) => {
   await test.step('Open booking form', async () => {
     await bookingPage.navigateToBooking();
   });
